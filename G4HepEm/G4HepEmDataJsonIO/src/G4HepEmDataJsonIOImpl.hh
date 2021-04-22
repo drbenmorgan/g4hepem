@@ -3,6 +3,7 @@
 
 #include <exception>
 
+#include "G4HepEmParameters.hh"
 #include "G4HepEmData.hh"
 #include "G4HepEmMatCutData.hh"
 #include "G4HepEmElementData.hh"
@@ -43,8 +44,9 @@ struct dynamic_array
 template <typename T>
 dynamic_array<T> make_array(int n)
 {
-  if (n == 0) {
-    return {0, nullptr};
+  if(n == 0)
+  {
+    return { 0, nullptr };
   }
   return { n, new T[n] };
 }
@@ -108,6 +110,43 @@ namespace nlohmann
 
       auto d = make_array<T>(j.size());
       std::copy(j.begin(), j.end(), d.begin());
+      return d;
+    }
+  };
+}  // namespace nlohmann
+
+// ===========================================================================
+// --- G4HepEmParameters
+namespace nlohmann
+{
+  template <>
+  struct adl_serializer<G4HepEmParameters>
+  {
+    static void to_json(json& j, const G4HepEmParameters& d)
+    {
+      j["fElectronTrackingCut"]  = d.fElectronTrackingCut;
+      j["fMinLossTableEnergy"]   = d.fMinLossTableEnergy;
+      j["fMaxLossTableEnergy"]   = d.fMaxLossTableEnergy;
+      j["fNumLossTableBins"]     = d.fNumLossTableBins;
+      j["fFinalRange"]           = d.fFinalRange;
+      j["fDRoverRange"]          = d.fDRoverRange;
+      j["fLinELossLimit"]        = d.fLinELossLimit;
+      j["fElectronBremModelLim"] = d.fElectronBremModelLim;
+    }
+
+    static G4HepEmParameters from_json(const json& j)
+    {
+      G4HepEmParameters d;
+
+      j.at("fElectronTrackingCut").get_to(d.fElectronTrackingCut);
+      j.at("fMinLossTableEnergy").get_to(d.fMinLossTableEnergy);
+      j.at("fMaxLossTableEnergy").get_to(d.fMaxLossTableEnergy);
+      j.at("fNumLossTableBins").get_to(d.fNumLossTableBins);
+      j.at("fFinalRange").get_to(d.fFinalRange);
+      j.at("fDRoverRange").get_to(d.fDRoverRange);
+      j.at("fLinELossLimit").get_to(d.fLinELossLimit);
+      j.at("fElectronBremModelLim").get_to(d.fElectronBremModelLim);
+
       return d;
     }
   };
