@@ -40,3 +40,6 @@ add_subdirectory(testElectronInteractionBrem)
 set(G4HepEm_DIR "${CMAKE_CURRENT_LIST_DIR}/shims")
 add_subdirectory(${PROJECT_SOURCE_DIR}/apps/examples/TestEm3 ${CMAKE_CURRENT_BINARY_DIR}/TestEm3)
 add_test(NAME TestEm3 COMMAND TestEm3 -m "${PROJECT_SOURCE_DIR}/apps/examples/TestEm3/ATLASbar.mac")
+
+add_subdirectory(${PROJECT_SOURCE_DIR}/apps/examples/trackingmanager-offload ${CMAKE_CURRENT_BINARY_DIR}/trackingmanager-offload)
+add_test(NAME trackingmanager-offload COMMAND trackingmanager-offload)
